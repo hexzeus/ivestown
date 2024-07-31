@@ -1,4 +1,4 @@
-// pages/index.tsx
+// app/page.tsx
 'use client';
 
 import React from 'react';
@@ -10,65 +10,65 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 1.5rem 2rem 1.5rem 2rem;
-  @media (min-width: 640px) {
-    padding: 2rem 3rem 2rem 3rem;
-  }
-  @media (min-width: 768px) {
-    padding: 3rem 4rem 3rem 4rem;
-  }
-  @media (min-width: 1024px) {
-    padding: 4rem 6rem 4rem 6rem;
-  }
+  padding: 1.5rem 2rem;
+  background-color: #0f172a;
+  background-image: radial-gradient(
+    ellipse at center,
+    rgba(15, 23, 42, 0.8) 0%,
+    rgba(15, 23, 42, 1) 100%
+  );
 `;
 
 const Main = styled.main`
   flex-grow: 1;
   width: 100%;
-  max-width: 32rem;
-  border: 1px solid rgba(0, 255, 0, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-  border-radius: 0.5rem;
-  background-color: rgba(31, 41, 55, 0.9);
-  backdrop-filter: blur(16px);
-  transition: box-shadow 0.5s ease-in-out;
+  max-width: 48rem;
+  background-color: rgba(30, 41, 59, 0.9);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 0.5s, box-shadow 0.5s;
 
   &:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
   }
 `;
 
-const Section = styled.section`
-  margin-bottom: 5rem;
+const Header = styled.header`
+  padding: 2rem;
+  background-color: rgba(51, 65, 85, 0.9);
+  backdrop-filter: blur(8px);
 `;
 
-const SectionTitle = styled.h2`
+const Title = styled.h1`
   font-size: 3rem;
   font-weight: 800;
-  margin-bottom: 2rem;
   color: #4ade80;
-  border-bottom: 4px solid #4ade80;
-  padding-bottom: 0.5rem;
-  transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
+  text-shadow: 0 0 10px rgba(68, 238, 68, 0.8), 0 0 20px rgba(68, 238, 68, 0.6), 0 0 30px rgba(68, 238, 68, 0.4);
+  transition: text-shadow 0.5s ease-in-out, transform 0.5s ease-in-out;
 
   &:hover {
-    color: #34d399;
+    text-shadow: 0 0 20px rgba(68, 238, 68, 1), 0 0 40px rgba(68, 238, 68, 0.8), 0 0 60px rgba(68, 238, 68, 0.6);
     transform: scale(1.05);
   }
 `;
 
 const Description = styled.p`
-  font-size: 1.125rem;
-  margin-bottom: 3rem;
+  font-size: 1.25rem;
   color: #d4d4d4;
-  transition: color 0.5s ease-in-out;
+  margin-top: 1rem;
+  transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
 
   &:hover {
     color: #a3e635;
+    transform: translateY(-0.25rem);
   }
 `;
 
-const ServiceGrid = styled.div`
+const ServicesContainer = styled.div`
+  padding: 2rem;
   display: grid;
   grid-template-columns: repeat(1, 1fr);
   gap: 2rem;
@@ -79,34 +79,35 @@ const ServiceGrid = styled.div`
 `;
 
 const ServiceCard = styled.div`
-  background-color: rgba(31, 41, 55, 0.9);
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-  border: 1px solid rgba(0, 255, 0, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-  transition: box-shadow 0.5s ease-in-out;
+  background-color: rgba(51, 65, 85, 0.9);
+  padding: 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  transform-style: preserve-3d;
+  transition: transform 0.5s, box-shadow 0.5s;
 
   &:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
+    transform: translateY(-0.5rem);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.08);
   }
 `;
 
-const ServiceTitle = styled.h3`
-  font-size: 1.5rem;
+const ServiceTitle = styled.h2`
+  font-size: 1.75rem;
   font-weight: 700;
-  margin-bottom: 1rem;
   color: #4ade80;
-  text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.6), 0 0 30px rgba(0, 255, 0, 0.4);
+  text-shadow: 0 0 10px rgba(68, 238, 68, 0.8), 0 0 20px rgba(68, 238, 68, 0.6), 0 0 30px rgba(68, 238, 68, 0.4);
   transition: text-shadow 0.5s ease-in-out;
 
   &:hover {
-    text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 40px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.6);
+    text-shadow: 0 0 20px rgba(68, 238, 68, 1), 0 0 40px rgba(68, 238, 68, 0.8), 0 0 60px rgba(68, 238, 68, 0.6);
   }
 `;
 
 const ServiceDescription = styled.p`
-  margin-bottom: 1.5rem;
+  font-size: 1.125rem;
   color: #d4d4d4;
+  margin-top: 1rem;
   transition: color 0.5s ease-in-out;
 
   &:hover {
@@ -115,34 +116,30 @@ const ServiceDescription = styled.p`
 `;
 
 const PrimaryButton = styled.a`
+  display: inline-block;
   background-color: #4ade80;
-  color: #171717;
+  color: #0f172a;
+  font-size: 1rem;
   font-weight: 700;
   padding: 1rem 2rem;
   border-radius: 9999px;
+  text-decoration: none;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   transition: background-color 0.5s ease-in-out, transform 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
 
   &:hover {
     background-color: #34d399;
     transform: scale(1.05);
-    box-shadow: 0 4px 8px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
 `;
 
 const Footer = styled.footer`
-  background-color: rgba(31, 41, 55, 0.9);
   padding: 1rem 0;
   text-align: center;
-  border: 1px solid rgba(0, 255, 0, 0.3);
-  box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
-  border-radius: 0.5rem;
-  width: 100%;
-  max-width: 32rem;
-  transition: box-shadow 0.5s ease-in-out;
-
-  &:hover {
-    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
-  }
+  background-color: rgba(30, 41, 59, 0.9);
+  border-radius: 0 0 1rem 1rem;
+  box-shadow: 0 -10px 15px -3px rgba(0, 0, 0, 0.1), 0 -4px 6px -2px rgba(0, 0, 0, 0.05);
 `;
 
 const FooterText = styled.p`
@@ -158,33 +155,30 @@ export default function HomePage() {
     return (
         <Container>
             <Main>
-                <Section>
-                    <SectionTitle>IVES_DEV</SectionTitle>
+                <Header>
+                    <Title>IVES_DEV</Title>
                     <Description>Cutting-edge web development services. Specializing in React and Native.js.</Description>
-                </Section>
-                <Section>
-                    <SectionTitle>Our Services</SectionTitle>
-                    <ServiceGrid>
-                        <ServiceCard>
-                            <ServiceTitle>React Development</ServiceTitle>
-                            <ServiceDescription>
-                                Scalable and efficient web applications with seamless user experiences.
-                            </ServiceDescription>
-                            <PrimaryButton href="#">Learn More</PrimaryButton>
-                        </ServiceCard>
-                        <ServiceCard>
-                            <ServiceTitle>Native.js Development</ServiceTitle>
-                            <ServiceDescription>
-                                High-performance mobile apps for iOS and Android platforms.
-                            </ServiceDescription>
-                            <PrimaryButton href="#">Learn More</PrimaryButton>
-                        </ServiceCard>
-                    </ServiceGrid>
-                </Section>
+                </Header>
+                <ServicesContainer>
+                    <ServiceCard>
+                        <ServiceTitle>React Development</ServiceTitle>
+                        <ServiceDescription>
+                            Scalable and efficient web applications with seamless user experiences.
+                        </ServiceDescription>
+                        <PrimaryButton href="#">Learn More</PrimaryButton>
+                    </ServiceCard>
+                    <ServiceCard>
+                        <ServiceTitle>Native.js Development</ServiceTitle>
+                        <ServiceDescription>
+                            High-performance mobile apps for iOS and Android platforms.
+                        </ServiceDescription>
+                        <PrimaryButton href="#">Learn More</PrimaryButton>
+                    </ServiceCard>
+                </ServicesContainer>
+                <Footer>
+                    <FooterText>&copy; 2024 IVES_DEV. All rights reserved.</FooterText>
+                </Footer>
             </Main>
-            <Footer>
-                <FooterText>&copy; 2024 IVES_DEV. All rights reserved.</FooterText>
-            </Footer>
         </Container>
     );
 }
