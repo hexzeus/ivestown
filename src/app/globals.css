@@ -5,33 +5,39 @@
 body {
   @apply bg-black text-green-300 leading-relaxed;
   font-family: 'Courier New', Courier, monospace;
-  background-image: url('/path/to/matrix-bg.jpg');
-  background-size: cover;
-  background-attachment: fixed;
+  background: linear-gradient(135deg, #000000 25%, #0a0a0a 50%, #000000 75%);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+
+@keyframes gradientBG {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-green-800 text-black font-bold py-2 px-4 rounded hover:bg-green-600 transition duration-300;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    @apply bg-green-800 text-black font-bold py-2 px-4 rounded transition duration-700 ease-in-out transform hover:bg-green-600 hover:scale-110;
+    box-shadow: 0 4px 6px rgba(0, 255, 0, 0.5);
   }
   .section-title {
-    @apply text-4xl font-extrabold mb-12 text-green-500 border-b-2 border-green-500 pb-4;
+    @apply text-5xl font-extrabold mb-12 text-green-500 border-b-4 border-green-500 pb-4 transition duration-700 ease-in-out transform hover:text-green-300 hover:scale-110;
   }
   .bg-background {
-    @apply bg-gray-900 bg-opacity-90 backdrop-blur-lg;
+    @apply bg-gray-900 bg-opacity-90 backdrop-blur-lg transition duration-700 ease-in-out;
   }
   .text-foreground {
-    @apply text-green-300;
+    @apply text-green-300 transition duration-700 ease-in-out hover:text-green-100;
   }
   .text-primary {
-    @apply text-green-500;
+    @apply text-green-500 transition duration-700 ease-in-out hover:text-green-300;
   }
   .text-secondary {
-    @apply text-green-400;
+    @apply text-green-400 transition duration-700 ease-in-out hover:text-green-200;
   }
   .border-primary {
-    @apply border-green-500;
+    @apply border-green-500 transition duration-700 ease-in-out hover:border-green-300;
   }
 
   .matrix-grid {
@@ -41,24 +47,34 @@ body {
   }
 
   .card {
-    @apply bg-gray-800 p-6 rounded-lg shadow-lg hover:bg-gray-700 transition duration-300;
+    @apply bg-gray-800 p-6 rounded-lg shadow-lg transition duration-700 ease-in-out transform hover:bg-gray-700 hover:-translate-y-3;
     border: 1px solid rgba(0, 255, 0, 0.1);
   }
 
   .card-title {
-    @apply text-2xl font-bold text-green-500 mb-4;
+    @apply text-2xl font-bold text-green-500 mb-4 transition duration-700 ease-in-out hover:text-green-300;
   }
 
   .card-content {
-    @apply text-green-300;
+    @apply text-green-300 transition duration-700 ease-in-out hover:text-green-100;
   }
 
   .matrix-border {
     border: 1px solid rgba(0, 255, 0, 0.3);
-    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.7);
+    transition: box-shadow 0.7s ease-in-out;
+  }
+
+  .matrix-border:hover {
+    box-shadow: 0 0 30px rgba(0, 255, 0, 1);
   }
 
   .neon-text {
-    text-shadow: 0 0 5px rgba(0, 255, 0, 0.5), 0 0 10px rgba(0, 255, 0, 0.3), 0 0 20px rgba(0, 255, 0, 0.1);
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.6), 0 0 30px rgba(0, 255, 0, 0.4);
+    transition: text-shadow 0.7s ease-in-out;
+  }
+
+  .neon-text:hover {
+    text-shadow: 0 0 20px rgba(0, 255, 0, 1), 0 0 40px rgba(0, 255, 0, 0.8), 0 0 60px rgba(0, 255, 0, 0.6);
   }
 }

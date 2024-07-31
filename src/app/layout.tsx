@@ -13,11 +13,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen flex flex-col bg-background text-foreground`}>
-        <header className="bg-background py-4">
+        <header className="bg-background py-4 matrix-border">
           <nav className="container mx-auto px-6">
             <div className="flex items-center justify-between">
               <div className="text-2xl font-bold text-primary neon-text">
-                IVES_DEV
+                SuperUltra Dark Goth Matrix Theme
               </div>
             </div>
           </nav>
