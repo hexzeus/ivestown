@@ -1,6 +1,6 @@
 // app/layout.tsx
 'use client';
-import './globals.css';
+import { Global, css } from '@emotion/react';
 import { Montserrat } from 'next/font/google';
 
 const montserrat = Montserrat({ subsets: ['latin'], weight: ['400', '700'] });
@@ -12,9 +12,19 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${montserrat.className} min-h-screen flex flex-col bg-background text-foreground`}>
-        {children}
-      </body>
+      <Global
+        styles={css`
+          body {
+            font-family: ${montserrat.style.fontFamily};
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #171717;
+            color: #d4d4d4;
+          }
+        `}
+      />
+      <body>{children}</body>
     </html>
   );
 }
