@@ -26,16 +26,13 @@ export default function BuffaloChatClient() {
                     path: '/api/socket_io',
                 });
                 setSocket(newSocket);
-
                 newSocket.on('connect', () => {
                     console.log('Connected to server');
                     setUserId(newSocket.id || `user-${Math.random().toString(36).substr(2, 9)}`);
                 });
-
                 newSocket.on('chat message', (message: ChatMessage) => {
                     console.log('Received message:', message);
                     setMessages(prevMessages => {
-                        // Check if the message is already in the state
                         if (!prevMessages.some(m => m.id === message.id)) {
                             return [...prevMessages, message];
                         }
@@ -46,9 +43,7 @@ export default function BuffaloChatClient() {
                 console.error('Failed to initialize socket:', error);
             }
         };
-
         initSocket();
-
         return () => {
             if (socket) {
                 socket.disconnect();

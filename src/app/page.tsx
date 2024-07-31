@@ -1,9 +1,9 @@
-import dynamic from 'next/dynamic';
-
-const BuffaloChatClient = dynamic(() => import('./BuffaloChatClient'), {
-    ssr: false,
-});
+import BuffaloChatClient from '../components/BuffaloChatClient';
 
 export default function Home() {
-    return <BuffaloChatClient />;
+    return (
+        <div>
+            <BuffaloChatClient />
+        </div>
+    );
 }

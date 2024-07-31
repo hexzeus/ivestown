@@ -8,12 +8,16 @@ const SocketHandler = (req, res) => {
     }
 
     console.log('Socket is initializing');
-    const io = new Server(res.socket.server);
+    const io = new Server(res.socket.server, {
+        path: '/api/socket_io',
+        addTrailingSlash: false,
+    });
     res.socket.server.io = io;
 
     io.on('connection', socket => {
-        socket.on('send-message', msg => {
-            io.emit('receive-message', msg);
+        console.log('New client connected');
+        socket.on('chat message', msg => {
+            io.emit('chat message', msg);
         });
     });
 
