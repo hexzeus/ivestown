@@ -9,8 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 100vh;
-  padding: 1.5rem 2rem;
+  min-height: 100vh;
+  padding: 2rem 1.5rem;
   background-color: #0f172a;
   background-image: radial-gradient(
     ellipse at center,
@@ -43,7 +43,7 @@ const Header = styled.header`
 `;
 
 const Title = styled.h1`
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 800;
   color: #4ade80;
   text-shadow: 0 0 10px rgba(68, 238, 68, 0.8), 0 0 20px rgba(68, 238, 68, 0.6), 0 0 30px rgba(68, 238, 68, 0.4);
@@ -56,7 +56,7 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   color: #d4d4d4;
   margin-top: 1rem;
   transition: color 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -93,7 +93,7 @@ const ServiceCard = styled.div`
 `;
 
 const ServiceTitle = styled.h2`
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 700;
   color: #4ade80;
   text-shadow: 0 0 10px rgba(68, 238, 68, 0.8), 0 0 20px rgba(68, 238, 68, 0.6), 0 0 30px rgba(68, 238, 68, 0.4);
@@ -105,7 +105,7 @@ const ServiceTitle = styled.h2`
 `;
 
 const ServiceDescription = styled.p`
-  font-size: 1.125rem;
+  font-size: 1rem;
   color: #d4d4d4;
   margin-top: 1rem;
   transition: color 0.5s ease-in-out;
