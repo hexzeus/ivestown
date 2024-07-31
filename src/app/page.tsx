@@ -1,243 +1,272 @@
-// app/page.tsx
+/** @jsxImportSource @emotion/react */
 'use client';
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
+import { keyframes, css } from '@emotion/react';
+
+const fadeIn = keyframes`
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const shimmer = keyframes`
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+`;
+
+const staggeredFadeIn = keyframes`
+  from { opacity: 0; transform: translateY(50px); }
+  to { opacity: 1; transform: translateY(0); }
+`;
+
+const floatAnimation = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+`;
+
+const fadeAnimation = keyframes`
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+`;
+
+const ParticleBackground = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+`;
+
+const Particle = styled.div<{ duration: number }>`
+  position: absolute;
+  background-color: rgba(255, 215, 0, 0.2);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: ${props => css`
+    ${floatAnimation} ${props.duration}s infinite ease-in-out,
+    ${fadeAnimation} ${props.duration}s infinite ease-in-out
+  `};
+`;
+
+function ParticleSystem() {
+    const particles = Array.from({ length: 20 }, (_, i) => (
+        <Particle
+            key={i}
+            style={{
+                left: `${Math.random() * 100}%`,
+                top: `${Math.random() * 100}%`,
+                width: `${Math.random() * 10 + 5}px`,
+                height: `${Math.random() * 10 + 5}px`,
+            }}
+            duration={Math.random() * 10 + 5}
+        />
+    ));
+
+    return <ParticleBackground>{particles}</ParticleBackground>;
+}
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   min-height: 100vh;
-  padding: 4rem 2.5rem;
-  background-color: #040404;
-  background-image: radial-gradient(
-    at top center,
-    rgba(10, 10, 10, 0.95),
-    rgba(0, 0, 0, 1)
-  );
+  padding: 2rem;
+  background: linear-gradient(to bottom, #000000, #1a1a1a);
+  position: relative;
+  transition: all 0.5s ease;
 `;
 
-const Main = styled.main`
-  flex-grow: 1;
-  width: 100%;
-  max-width: 90rem;
-  background-color: rgba(15, 15, 15, 0.95);
-  border-radius: 3rem;
-  box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.5), 0 40px 80px -40px rgba(0, 0, 0, 0.6);
-  overflow: hidden;
-  transform-style: preserve-3d;
-  transition: transform 0.7s, box-shadow 0.7s;
-
-  &:hover {
-    transform: scale(1.02);
-    box-shadow: 0 50px 100px -30px rgba(0, 0, 0, 0.6), 0 40px 80px -40px rgba(0, 0, 0, 0.7);
-  }
-`;
-
-const Header = styled.header`
-  padding: 4rem;
-  background-color: rgba(20, 20, 20, 0.95);
-  backdrop-filter: blur(20px);
-`;
-
-const Title = styled.h1`
+const Logo = styled.h1`
   font-size: 3.5rem;
-  font-weight: 800;
-  color: #0b0b0b;
-  text-shadow: 0 0 25px rgba(143, 255, 255, 0.8), 0 0 40px rgba(143, 255, 255, 0.6), 0 0 60px rgba(143, 255, 255, 0.4);
-  transition: text-shadow 0.7s ease-in-out, transform 0.7s ease-in-out;
-
-  &:hover {
-    text-shadow: 0 0 40px rgba(143, 255, 255, 1), 0 0 60px rgba(143, 255, 255, 0.8), 0 0 80px rgba(143, 255, 255, 0.6);
-    transform: scale(1.05);
-  }
-
-  @media (max-width: 767px) {
-    font-size: 2.5rem;
-  }
+  font-weight: 700;
+  color: transparent;
+  background: linear-gradient(45deg, #ffd700, #f0f0f0);
+  background-clip: text;
+  -webkit-background-clip: text;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+  margin-bottom: 1rem;
+  animation: ${fadeIn} 1s ease-out;
 `;
 
-const Description = styled.p`
-  font-size: 1.5rem;
-  color: #b4b4b4;
-  margin-top: 2rem;
-  transition: color 0.7s ease-in-out, transform 0.7s ease-in-out;
-
-  &:hover {
-    color: #d8ff73;
-    transform: translateY(-0.5rem);
-  }
-
-  @media (max-width: 767px) {
-    font-size: 1.25rem;
-  }
+const Tagline = styled.p`
+  font-size: 1.2rem;
+  color: #a0a0a0;
+  text-align: center;
+  margin-bottom: 2rem;
+  animation: ${fadeIn} 1s ease-out 0.3s backwards;
 `;
 
-const TemplatesContainer = styled.div`
-  padding: 4rem;
+const TemplateGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  gap: 4rem;
-
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+  width: 100%;
+  max-width: 1200px;
+  animation: ${fadeIn} 1s ease-out 0.6s backwards;
 `;
 
-const TemplateCard = styled.div`
-  background-color: rgba(20, 20, 20, 0.95);
-  padding: 4rem;
-  border-radius: 3rem;
-  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.3), 0 30px 60px -30px rgba(0, 0, 0, 0.4);
-  transform-style: preserve-3d;
-  transition: transform 0.7s, box-shadow 0.7s;
+const TemplateCard = styled.div<{ index: number }>`
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 1rem;
+  padding: 2rem;
+  transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+  opacity: 0;
+  animation: ${staggeredFadeIn} 0.8s ease-out forwards;
+  animation-delay: ${props => props.index * 0.1}s;
 
-  &:hover {
-    transform: translateY(-1.5rem);
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.4), 0 30px 60px -30px rgba(0, 0, 0, 0.5);
+  &:before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(30deg);
+    animation: ${shimmer} 3s infinite linear;
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
-  @media (max-width: 767px) {
-    padding: 3rem;
-    border-radius: 2rem;
+  &:hover {
+    transform: translateY(-10px) scale(1.05);
+    box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3), 0 0 20px rgba(255, 215, 0, 0.5);
+    background-color: rgba(255, 215, 0, 0.1);
+
+    &:before {
+      opacity: 1;
+    }
   }
 `;
 
 const TemplateTitle = styled.h2`
-  font-size: 2rem;
-  font-weight: 700;
-  color: #0b0b0b;
-  text-shadow: 0 0 25px rgba(143, 255, 255, 0.8), 0 0 40px rgba(143, 255, 255, 0.6), 0 0 60px rgba(143, 255, 255, 0.4);
-  transition: text-shadow 0.7s ease-in-out;
-
-  &:hover {
-    text-shadow: 0 0 40px rgba(143, 255, 255, 1), 0 0 60px rgba(143, 255, 255, 0.8), 0 0 80px rgba(143, 255, 255, 0.6);
-  }
-
-  @media (max-width: 767px) {
-    font-size: 1.75rem;
-  }
+  font-size: 1.5rem;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  position: relative;
+  z-index: 1;
 `;
 
 const TemplateDescription = styled.p`
-  font-size: 1.25rem;
-  color: #b4b4b4;
-  margin-top: 2rem;
-  transition: color 0.7s ease-in-out;
-
-  &:hover {
-    color: #d8ff73;
-  }
-
-  @media (max-width: 767px) {
-    font-size: 1.125rem;
-  }
+  font-size: 1rem;
+  color: #a0a0a0;
+  position: relative;
+  z-index: 1;
 `;
 
-const PrimaryButton = styled.button`
-  display: inline-block;
-  background-color: #8fffff;
-  color: #040404;
-  font-size: 1.25rem;
+const BuyButton = styled.button`
+  background: linear-gradient(45deg, #ffd700, #ffec8b);
+  color: #000000;
+  font-size: 1.1rem;
   font-weight: 700;
-  padding: 1.5rem 3rem;
-  border-radius: 9999px;
+  padding: 1rem 2rem;
   border: none;
+  border-radius: 2rem;
   cursor: pointer;
-  text-decoration: none;
-  box-shadow: 0 25px 40px -15px rgba(0, 0, 0, 0.2), 0 15px 30px -15px rgba(0, 0, 0, 0.15);
-  transition: background-color 0.7s ease-in-out, transform 0.7s ease-in-out, box-shadow 0.7s ease-in-out;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-top: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
 
-  &:hover {
-    background-color: #64e9a8;
-    transform: scale(1.05);
-    box-shadow: 0 40px 80 -20px rgba(0, 0, 0, 0.3), 0 30px 60 -30px rgba(0, 0, 0, 0.4);
+  &:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      120deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: all 0.6s;
   }
 
-  @media (max-width: 767px) {
-    font-size: 1.125rem;
-    padding: 1.25rem 2.5rem;
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+
+    &:before {
+      left: 100%;
+    }
   }
 `;
 
 const Footer = styled.footer`
-  padding: 2rem 0;
+  font-size: 0.9rem;
+  color: #a0a0a0;
   text-align: center;
-  background-color: rgba(15, 15, 15, 0.95);
-  border-radius: 0 0 3rem 3rem;
-  box-shadow: 0 -25px 40px -15px rgba(0, 0, 0, 0.2), 0 -15px 30px -15px rgba(0, 0, 0, 0.15);
-`;
-
-const FooterText = styled.p`
-  font-size: 1.25rem;
-  color: #b4b4b4;
-  transition: color 0.7s ease-in-out;
-
-  &:hover {
-    color: #d8ff73;
-  }
-
-  @media (max-width: 767px) {
-    font-size: 1.125rem;
-  }
+  margin-top: 3rem;
+  animation: ${fadeIn} 1s ease-out 0.9s backwards;
 `;
 
 const templates = [
     {
-        title: 'Executive React Template',
-        description: 'A premium and highly performant React template for enterprise-level applications.',
+        title: 'Executive React',
+        description: 'Premium enterprise-level React template for industry leaders',
     },
     {
-        title: 'Cutting-Edge Native.js Template',
-        description: 'A cross-platform mobile app template with advanced features and a sleek design.',
+        title: 'Elite Native.js',
+        description: 'Cutting-edge cross-platform mobile app template for visionaries',
     },
     {
-        title: 'Scalable Next.js Template',
-        description: 'A robust and scalable Next.js template for building server-rendered web apps.',
+        title: 'Pinnacle Next.js',
+        description: 'Scalable server-rendered web app solution for global innovators',
     },
     {
-        title: 'Innovative Vue.js Template',
-        description: 'A modern and feature-rich Vue.js template for building dynamic web applications.',
+        title: 'Avant-garde Vue.js',
+        description: 'Innovative template for dynamic web applications that redefine excellence',
     },
 ];
 
 export default function HomePage() {
-    const [selectedTemplate, setSelectedTemplate] = useState(0);
+    const [selectedTemplate, setSelectedTemplate] = useState<number | null>(null);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) return null;
 
     return (
         <Container>
-            <Main>
-                <Header>
-                    <Title>IVES_DEV</Title>
-                    <Description>Cutting-edge web development services. Specializing in React, Native.js, and more.</Description>
-                </Header>
-                <TemplatesContainer>
-                    {templates.map((template, index) => (
-                        <TemplateCard
-                            key={index}
-                            onClick={() => setSelectedTemplate(index)}
-                            style={{
-                                backgroundColor:
-                                    index === selectedTemplate
-                                        ? 'rgba(143, 255, 255, 0.95)'
-                                        : 'rgba(20, 20, 20, 0.95)',
-                                color: index === selectedTemplate ? '#040404' : '#b4b4b4',
-                            }}
-                        >
-                            <TemplateTitle>{template.title}</TemplateTitle>
-                            <TemplateDescription>{template.description}</TemplateDescription>
-                            {index === selectedTemplate && (
-                                <PrimaryButton>Buy Template</PrimaryButton>
-                            )}
-                        </TemplateCard>
-                    ))}
-                </TemplatesContainer>
-                <Footer>
-                    <FooterText>&copy; 2024 IVES_DEV. All rights reserved.</FooterText>
-                </Footer>
-            </Main>
+            <ParticleSystem />
+            <div>
+                <Logo>IVES_DEV</Logo>
+                <Tagline>Exclusive web development solutions for the elite visionary</Tagline>
+            </div>
+            <TemplateGrid>
+                {templates.map((template, index) => (
+                    <TemplateCard
+                        key={index}
+                        index={index}
+                        onClick={() => setSelectedTemplate(index)}
+                    >
+                        <TemplateTitle>{template.title}</TemplateTitle>
+                        <TemplateDescription>{template.description}</TemplateDescription>
+                        {selectedTemplate === index && (
+                            <BuyButton>Acquire Excellence</BuyButton>
+                        )}
+                    </TemplateCard>
+                ))}
+            </TemplateGrid>
+            <Footer>&copy; 2024 IVES_DEV. Redefining digital luxury.</Footer>
         </Container>
     );
 }
