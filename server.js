@@ -1,7 +1,7 @@
-const { createServer } = require('http');
-const { parse } = require('url');
-const next = require('next');
-const { initSocket } = require('./src/lib/socket');
+import { createServer } from 'http';
+import { parse } from 'url';
+import next from 'next';
+import { initSocket } from './src/lib/socket.js';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -15,8 +15,9 @@ app.prepare().then(() => {
 
     const io = initSocket(server);
 
-    server.listen(3000, (err) => {
+    const port = process.env.PORT || 3000;
+    server.listen(port, (err) => {
         if (err) throw err;
-        console.log('> Ready on http://localhost:3000');
+        console.log(`> Ready on http://localhost:${port}`);
     });
 });
