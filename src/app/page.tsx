@@ -7,12 +7,9 @@ export default function HomePage() {
             <main className="flex-grow w-full max-w-2xl matrix-border">
                 <section className="mb-20">
                     <h2 className="section-title neon-text fadeInUp">IVES_DEV</h2>
-                    <p className="text-foreground text-lg mb-8 fadeInUp" style={{ animationDelay: '0.5s' }}>
+                    <p className="text-foreground text-lg mb-12 fadeInUp" style={{ animationDelay: '0.5s' }}>
                         Cutting-edge web development services. Specializing in React and Native.js.
                     </p>
-                    <button className="btn-primary fadeInUp" style={{ animationDelay: '0.7s' }}>
-                        Explore Services
-                    </button>
                 </section>
                 <section className="mb-20">
                     <h2 className="section-title neon-text fadeInUp">Our Services</h2>
