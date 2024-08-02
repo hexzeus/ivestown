@@ -1,4 +1,5 @@
 'use client';
+
 import React, { useState, useEffect, useRef } from 'react';
 import { io, Socket } from 'socket.io-client';
 import styles from './BuffaloChat.module.css';
@@ -20,10 +21,9 @@ export default function BuffaloChatClient() {
     useEffect(() => {
         const initSocket = async () => {
             try {
-                await fetch('/api/socket');
                 const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || '';
                 const newSocket = io(socketUrl, {
-                    path: '/api/socket_io',
+                    path: '/api/socket',
                 });
                 setSocket(newSocket);
                 newSocket.on('connect', () => {
@@ -32,12 +32,7 @@ export default function BuffaloChatClient() {
                 });
                 newSocket.on('chat message', (message: ChatMessage) => {
                     console.log('Received message:', message);
-                    setMessages(prevMessages => {
-                        if (!prevMessages.some(m => m.id === message.id)) {
-                            return [...prevMessages, message];
-                        }
-                        return prevMessages;
-                    });
+                    setMessages((prevMessages) => [...prevMessages, message]);
                 });
             } catch (error) {
                 console.error('Failed to initialize socket:', error);
@@ -76,7 +71,7 @@ export default function BuffaloChatClient() {
             <h1 className={styles.logo}>Buffalo Chat</h1>
             <div className={styles.chatContainer}>
                 <div className={styles.messageList} ref={messageListRef}>
-                    {messages.map(message => (
+                    {messages.map((message) => (
                         <div
                             key={message.id}
                             className={`${styles.message} ${message.userId === userId ? styles.currentUserMessage : styles.otherUserMessage
@@ -93,7 +88,9 @@ export default function BuffaloChatClient() {
                     onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
                     placeholder="Type your message..."
                 />
-                <button className={styles.button} onClick={sendMessage}>Send</button>
+                <button className={styles.button} onClick={sendMessage}>
+                    Send
+                </button>
             </div>
         </div>
     );
