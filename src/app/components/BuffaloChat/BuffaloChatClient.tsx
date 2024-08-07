@@ -81,8 +81,7 @@ export default function BuffaloChatClient() {
                     {messages.map((message) => (
                         <div
                             key={message.id}
-                            className={`${styles.message} ${message.userId === userId ? styles.currentUserMessage : styles.otherUserMessage
-                                }`}
+                            className={`${styles.message} ${message.userId === userId ? styles.currentUserMessage : styles.otherUserMessage}`}
                         >
                             <span className={styles.messageText}>{message.text}</span>
                             <span className={styles.messageTime}>
