@@ -13,12 +13,23 @@ app.get('/', (req, res) => {
 
 const httpServer = createServer(app);
 
+const allowedOrigins = [
+    'https://ivesproducts.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:3001'
+];
+
 const io = new Server(httpServer, {
     cors: {
-        origin: process.env.FRONTEND_URL
-            ? [process.env.FRONTEND_URL, 'http://localhost:3000']  // Allow both production and development URLs
-            : '*',  // Allow all origins if FRONTEND_URL is not set (be cautious with this in production)
+        origin: (origin, callback) => {
+            if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+                callback(null, true);
+            } else {
+                callback(new Error('Not allowed by CORS'));
+            }
+        },
         methods: ['GET', 'POST'],
+        credentials: true
     },
 });
 
