@@ -107,11 +107,16 @@
   max-width: 80%;
   position: relative;
   overflow: hidden;
+  word-wrap: break-word; /* Ensure long words break and fit within the container */
+  white-space: pre-wrap; /* Preserve whitespace and ensure long text wraps correctly */
+  max-height: 200px; /* Maximum height for each message */
+  overflow-y: auto; /* Add a scrollbar if the message is too tall */
 }
 
 .messageText {
   position: relative;
   z-index: 1;
+  word-break: break-word; /* Ensure text breaks within the word if necessary */
 }
 
 .messageTime {
