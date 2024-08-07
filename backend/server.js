@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 const httpServer = createServer(app);
 
 const allowedOrigins = [
-    'https://iveshubchat.netlify.app/',
+    'https://iveshubchat.netlify.app',
     'http://localhost:3000',
     'http://localhost:3001'
 ];
