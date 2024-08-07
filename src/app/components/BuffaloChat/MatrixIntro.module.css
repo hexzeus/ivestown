@@ -9,6 +9,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  padding: 10px; /* Added padding for mobile devices */
 }
 
 .matrixBackground {
@@ -45,7 +46,7 @@
   text-align: center;
   color: #0f0;
   font-family: 'Courier New', monospace;
-  padding: 0 10px; /* Ensure proper padding for mobile devices */
+  padding: 10px; /* Ensure proper padding for mobile devices */
 }
 
 .title {

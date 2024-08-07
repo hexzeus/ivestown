@@ -3,7 +3,7 @@ import styles from './MatrixIntro.module.css';
 
 const MatrixIntro: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
     const [text, setText] = useState('');
-    const fullText = "Weelcome to IVES_HUB Chat. Prepare to enter the Matrix.";
+    const fullText = "Prepare to enter the IVES_HUB Chat.";
     const [showEnterButton, setShowEnterButton] = useState(false);
 
     useEffect(() => {

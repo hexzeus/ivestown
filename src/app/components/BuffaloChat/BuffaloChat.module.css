@@ -57,6 +57,7 @@
   width: 200px;
   padding-right: 1rem;
   border-right: 1px solid rgba(0, 255, 0, 0.3);
+  overflow-y: auto; /* Ensure the sidebar is scrollable */
 }
 
 .sidebar h2 {
@@ -80,6 +81,7 @@
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
+  overflow-y: auto; /* Ensure the chat area is scrollable */
 }
 
 .messageList {
@@ -164,6 +166,11 @@
 .inputContainer {
   display: flex;
   gap: 0.5rem;
+  padding-top: 0.5rem; /* Added padding for separation */
+  position: sticky; /* Ensure input stays at the bottom */
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9); /* Background color to separate from chat */
+  z-index: 2;
 }
 
 .input {
