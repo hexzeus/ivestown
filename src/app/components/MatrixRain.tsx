@@ -32,10 +32,10 @@ const MatrixRain: React.FC = () => {
     function draw() {
       if (!canvas || !ctx) return;
 
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';  // Increased opacity
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.fillStyle = '#0F0';
+      ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';  // Semi-transparent green
       ctx.font = `${fontSize}px monospace`;
 
       for (let i = 0; i < drops.length; i++) {
@@ -67,7 +67,9 @@ const MatrixRain: React.FC = () => {
         left: 0,
         width: '100%',
         height: '100%',
-        zIndex: -1
+        zIndex: 1,  // Changed from -1 to 1
+        pointerEvents: 'none',  // Allows clicking through the canvas
+        opacity: 0.5  // Added opacity
       }}
     />
   );

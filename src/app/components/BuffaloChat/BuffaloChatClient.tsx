@@ -127,27 +127,29 @@ export default function BuffaloChatClient() {
         }
     };
 
-    if (!isJoined) {
-        return (
-            <div className={styles.joinContainer}>
+    const renderJoinScreen = () => (
+        <div className={styles.joinContainer}>
+            <div className={styles.matrixRainContainer}>
                 <MatrixRain />
-                <h1 className={styles.logo}>IVES_HUB Chat</h1>
-                <input
-                    className={styles.input}
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="Enter your username"
-                />
-                <button className={styles.button} onClick={handleJoin}>
-                    Join Chat
-                </button>
             </div>
-        );
-    }
+            <h1 className={styles.logo}>IVES_HUB Chat</h1>
+            <input
+                className={styles.input}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter your username"
+            />
+            <button className={styles.button} onClick={handleJoin}>
+                Join Chat
+            </button>
+        </div>
+    );
 
-    return (
+    const renderChatInterface = () => (
         <div className={styles.container}>
-            <MatrixRain />
+            <div className={styles.matrixRainContainer}>
+                <MatrixRain />
+            </div>
             <h1 className={styles.logo}>IVES_HUB Chat</h1>
             <div className={styles.chatContainer}>
                 <div className={styles.sidebar}>
@@ -168,10 +170,10 @@ export default function BuffaloChatClient() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -50 }}
                                     className={`${styles.message} ${message.userId === userId
-                                        ? styles.currentUserMessage
-                                        : message.userId === 'system'
-                                            ? styles.systemMessage
-                                            : styles.otherUserMessage
+                                            ? styles.currentUserMessage
+                                            : message.userId === 'system'
+                                                ? styles.systemMessage
+                                                : styles.otherUserMessage
                                         }`}
                                 >
                                     <span className={styles.messageText}>{message.text}</span>
@@ -205,4 +207,6 @@ export default function BuffaloChatClient() {
             </div>
         </div>
     );
+
+    return isJoined ? renderChatInterface() : renderJoinScreen();
 }
