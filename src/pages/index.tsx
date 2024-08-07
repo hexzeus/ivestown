@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic';
-import styles from '../app/styles/Home.module.css'; // Correct import statement
+import styles from '../app/styles/Home.module.css';
 
 const BuffaloChatClient = dynamic(
     () => import('../app/components/BuffaloChat/BuffaloChatClient'),
