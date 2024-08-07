@@ -31,7 +31,7 @@ const MatrixIntro: React.FC<{ onComplete: () => void }> = ({ onComplete }) => {
                 </div>
                 {showEnterButton && (
                     <button className={styles.enterButton} onClick={onComplete}>
-                        Enter the Matrix
+                        Enter the IVES_HUB Chat
                     </button>
                 )}
             </div>
