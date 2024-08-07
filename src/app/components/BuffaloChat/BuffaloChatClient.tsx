@@ -170,10 +170,10 @@ export default function BuffaloChatClient() {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -50 }}
                                     className={`${styles.message} ${message.userId === userId
-                                            ? styles.currentUserMessage
-                                            : message.userId === 'system'
-                                                ? styles.systemMessage
-                                                : styles.otherUserMessage
+                                        ? styles.currentUserMessage
+                                        : message.userId === 'system'
+                                            ? styles.systemMessage
+                                            : styles.otherUserMessage
                                         }`}
                                 >
                                     <span className={styles.messageText}>{message.text}</span>

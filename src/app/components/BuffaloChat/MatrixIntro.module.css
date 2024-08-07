@@ -1,0 +1,152 @@
+.introContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.matrixBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%);
+  opacity: 0.5;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.matrixBackground::before {
+  content: '0 1 ';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  transform-origin: center;
+  animation: matrixRain 20s linear infinite;
+  font-family: 'Courier New', monospace;
+  font-size: 1.5rem;
+  color: #0f0;
+  opacity: 0.7;
+  text-shadow: 0 0 5px #0f0;
+}
+
+.content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  color: #0f0;
+  font-family: 'Courier New', monospace;
+  padding: 0 10px; /* Ensure proper padding for mobile devices */
+}
+
+.title {
+  font-size: 4rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
+  animation: pulse 2s infinite;
+}
+
+.textContainer {
+  position: relative;
+  height: 4.5rem;
+  margin-bottom: 2rem;
+  overflow: hidden;
+}
+
+.typingText {
+  color: #0f0;
+  font-size: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: .15em solid #0f0;
+  animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
+}
+
+.enterButton {
+  background-color: transparent;
+  border: 2px solid #0f0;
+  color: #0f0;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.enterButton span {
+  position: relative;
+  z-index: 1;
+}
+
+.enterButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(0, 255, 0, 0.4), transparent);
+  transition: all 0.5s;
+}
+
+.enterButton:hover::before {
+  left: 100%;
+}
+
+.enterButton:hover {
+  background-color: rgba(0, 255, 0, 0.2);
+  box-shadow: 0 0 10px #0f0;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
+  }
+  50% {
+    text-shadow: 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0;
+  }
+}
+
+@keyframes matrixRain {
+  0% {
+    transform: translateY(0) rotate(45deg);
+  }
+  100% {
+    transform: translateY(50%) rotate(45deg);
+  }
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink-caret {
+  from, to { border-color: transparent }
+  50% { border-color: #0f0 }
+}
+
+@media (max-width: 768px) {
+  .title {
+    font-size: 2.5rem;
+  }
+  
+  .typingText {
+    font-size: 1rem;
+  }
+  
+  .enterButton {
+    font-size: 1rem;
+    padding: 8px 16px;
+  }
+}
