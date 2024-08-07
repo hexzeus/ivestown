@@ -8,7 +8,7 @@ const BuffaloChatClient = dynamic(
 export default function Home() {
     return (
         <div>
-            <h1>Welcome to Buffalo Chat</h1>
+            <h1>IVES_HUB Chat</h1>
             <BuffaloChatClient />
         </div>
     );

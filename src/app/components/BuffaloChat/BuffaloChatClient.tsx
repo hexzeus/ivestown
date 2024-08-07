@@ -75,7 +75,7 @@ export default function BuffaloChatClient() {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.logo}>Buffalo Chat</h1>
+            <h1 className={styles.logo}>IVES_HUB Chat</h1>
             <div className={styles.chatContainer}>
                 <div className={styles.messageList} ref={messageListRef}>
                     {messages.map((message) => (
@@ -84,20 +84,25 @@ export default function BuffaloChatClient() {
                             className={`${styles.message} ${message.userId === userId ? styles.currentUserMessage : styles.otherUserMessage
                                 }`}
                         >
-                            {message.text}
+                            <span className={styles.messageText}>{message.text}</span>
+                            <span className={styles.messageTime}>
+                                {new Date(message.timestamp).toLocaleTimeString()}
+                            </span>
                         </div>
                     ))}
                 </div>
-                <input
-                    className={styles.input}
-                    value={inputMessage}
-                    onChange={(e) => setInputMessage(e.target.value)}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Type your message..."
-                />
-                <button className={styles.button} onClick={sendMessage}>
-                    Send
-                </button>
+                <div className={styles.inputContainer}>
+                    <input
+                        className={styles.input}
+                        value={inputMessage}
+                        onChange={(e) => setInputMessage(e.target.value)}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Enter the Matrix..."
+                    />
+                    <button className={styles.button} onClick={sendMessage}>
+                        Send
+                    </button>
+                </div>
             </div>
         </div>
     );
