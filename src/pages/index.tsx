@@ -1,4 +1,5 @@
 import dynamic from 'next/dynamic';
+import styles from '../app/styles/Home.module.css'; // Correct import statement
 
 const BuffaloChatClient = dynamic(
     () => import('../app/components/BuffaloChat/BuffaloChatClient'),
@@ -7,8 +8,7 @@ const BuffaloChatClient = dynamic(
 
 export default function Home() {
     return (
-        <div>
-            <h1>IVES_HUB Chat</h1>
+        <div className={styles.container}>
             <BuffaloChatClient />
         </div>
     );
