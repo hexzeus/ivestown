@@ -61,11 +61,15 @@ export default function BuffaloChatClient() {
         });
 
         newSocket.on('userTyping', ({ userId, isTyping }) => {
-            setTypingUsers(prev =>
-                isTyping
-                    ? [...prev, userId]
-                    : prev.filter(id => id !== userId)
-            );
+            setTypingUsers(prev => {
+                const newTypingUsers = new Set(prev);
+                if (isTyping) {
+                    newTypingUsers.add(userId);
+                } else {
+                    newTypingUsers.delete(userId);
+                }
+                return Array.from(newTypingUsers);
+            });
         });
 
         newSocket.on('systemMessage', (message: { text: string }) => {
@@ -111,12 +115,12 @@ export default function BuffaloChatClient() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInputMessage(e.target.value);
         if (socket) {
-            socket.emit('typing', true);
+            socket.emit('typing', { userId, isTyping: true });
             if (typingTimeoutRef.current) {
                 clearTimeout(typingTimeoutRef.current);
             }
             typingTimeoutRef.current = setTimeout(() => {
-                socket.emit('typing', false);
+                socket.emit('typing', { userId, isTyping: false });
             }, 2000);
         }
     };
