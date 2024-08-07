@@ -1,6 +1,5 @@
 'use client';
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import styles from './BuffaloChat.module.css';
 
@@ -18,33 +17,34 @@ export default function BuffaloChatClient() {
     const [userId, setUserId] = useState<string>('');
     const messageListRef = useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
-        const initSocket = async () => {
-            try {
-                const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || '';
-                const newSocket = io(socketUrl, {
-                    path: '/api/socket',
-                });
-                setSocket(newSocket);
-                newSocket.on('connect', () => {
-                    console.log('Connected to server');
-                    setUserId(newSocket.id || `user-${Math.random().toString(36).substr(2, 9)}`);
-                });
-                newSocket.on('chat message', (message: ChatMessage) => {
-                    console.log('Received message:', message);
-                    setMessages((prevMessages) => [...prevMessages, message]);
-                });
-            } catch (error) {
-                console.error('Failed to initialize socket:', error);
+    const addMessage = useCallback((message: ChatMessage) => {
+        setMessages((prevMessages) => {
+            if (!prevMessages.some(m => m.id === message.id)) {
+                return [...prevMessages, message];
             }
-        };
-        initSocket();
-        return () => {
-            if (socket) {
-                socket.disconnect();
-            }
-        };
+            return prevMessages;
+        });
     }, []);
+
+    useEffect(() => {
+        const socketUrl = process.env.NEXT_PUBLIC_SOCKET_URL || 'http://localhost:3001';
+        const newSocket = io(socketUrl);
+        setSocket(newSocket);
+
+        newSocket.on('connect', () => {
+            console.log('Connected to server');
+            setUserId(newSocket.id || `user-${Math.random().toString(36).substr(2, 9)}`);
+        });
+
+        newSocket.on('chat message', (message: ChatMessage) => {
+            console.log('Received message:', message);
+            addMessage(message);
+        });
+
+        return () => {
+            newSocket.disconnect();
+        };
+    }, [addMessage]);
 
     useEffect(() => {
         if (messageListRef.current) {
@@ -52,7 +52,7 @@ export default function BuffaloChatClient() {
         }
     }, [messages]);
 
-    const sendMessage = () => {
+    const sendMessage = useCallback(() => {
         if (inputMessage.trim() && socket) {
             const newMessage: ChatMessage = {
                 id: `${userId}-${Date.now()}`,
@@ -62,9 +62,16 @@ export default function BuffaloChatClient() {
             };
             console.log('Sending message:', newMessage);
             socket.emit('chat message', newMessage);
+            addMessage(newMessage);
             setInputMessage('');
         }
-    };
+    }, [inputMessage, socket, userId, addMessage]);
+
+    const handleKeyPress = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    }, [sendMessage]);
 
     return (
         <div className={styles.container}>
@@ -85,7 +92,7 @@ export default function BuffaloChatClient() {
                     className={styles.input}
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+                    onKeyPress={handleKeyPress}
                     placeholder="Type your message..."
                 />
                 <button className={styles.button} onClick={sendMessage}>
