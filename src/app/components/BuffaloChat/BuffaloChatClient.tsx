@@ -25,12 +25,9 @@ export default function BuffaloChatClient() {
     const [isJoined, setIsJoined] = useState(false);
     const [activeUsers, setActiveUsers] = useState<User[]>([]);
     const [typingUsers, setTypingUsers] = useState<string[]>([]);
-    const [showUserList, setShowUserList] = useState(false);
     const messageListRef = useRef<HTMLDivElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [joinAnimation, setJoinAnimation] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
 
     const addMessage = useCallback((message: ChatMessage) => {
         setMessages((prevMessages) => {
@@ -39,18 +36,6 @@ export default function BuffaloChatClient() {
             }
             return prevMessages;
         });
-    }, []);
-
-    useEffect(() => {
-        const handleResize = () => {
-            const mobile = window.innerWidth <= 768;
-            setIsMobile(mobile);
-            setShowUserList(!mobile);
-        };
-
-        handleResize();
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     useEffect(() => {
@@ -68,6 +53,7 @@ export default function BuffaloChatClient() {
         });
 
         newSocket.on('chat message', (message: ChatMessage) => {
+            console.log('Received message:', message);
             addMessage(message);
         });
 
@@ -115,6 +101,7 @@ export default function BuffaloChatClient() {
                 text: inputMessage,
                 timestamp: Date.now(),
             };
+            console.log('Sending message:', newMessage);
             socket.emit('chat message', newMessage);
             setInputMessage('');
         }
@@ -147,10 +134,6 @@ export default function BuffaloChatClient() {
                 setIsJoined(true);
             }, 2000);
         }
-    };
-
-    const toggleUserList = () => {
-        setShowUserList(prev => !prev);
     };
 
     const renderJoinScreen = () => (
@@ -207,58 +190,54 @@ export default function BuffaloChatClient() {
     );
 
     const renderChatInterface = () => (
-        <div className={styles.container}>
+        <motion.div
+            className={styles.container}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <div className={styles.matrixRainContainer}>
                 <MatrixRain />
             </div>
-            <div className={styles.chatHeader}>
-                <h1 className={styles.logo}>IVES_HUB Chat</h1>
-                {isMobile && (
-                    <button
-                        className={styles.toggleUserListButton}
-                        onClick={toggleUserList}
-                    >
-                        {showUserList ? 'Hide Users' : 'Show Users'}
-                    </button>
-                )}
-            </div>
+            <h1 className={styles.logo}>IVES_HUB Chat</h1>
             <div className={styles.chatContainer}>
-                <AnimatePresence>
-                    {showUserList && (
-                        <motion.div
-                            className={`${styles.sidebar} ${showUserList ? styles.show : ''}`}
-                            initial={isMobile ? { opacity: 0, y: -100 } : { opacity: 1, x: 0 }}
-                            animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }}
-                            exit={isMobile ? { opacity: 0, y: -100 } : { opacity: 1, x: 0 }}
-                            transition={{ duration: 0.3 }}
-                        >
-                            <h2>Active Users</h2>
-                            <ul>
-                                {activeUsers.map(user => (
-                                    <li key={user.id}>{user.username}</li>
-                                ))}
-                            </ul>
-                        </motion.div>
-                    )}
-                </AnimatePresence>
+                <div className={styles.sidebar}>
+                    <h2>Active Users</h2>
+                    <ul>
+                        {activeUsers.map(user => (
+                            <motion.li
+                                key={user.id}
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                            >
+                                {user.username}
+                            </motion.li>
+                        ))}
+                    </ul>
+                </div>
                 <div className={styles.chatArea}>
                     <div className={styles.messageList} ref={messageListRef}>
-                        {messages.map((message) => (
-                            <div
-                                key={message.id}
-                                className={`${styles.message} ${message.userId === userId
+                        <AnimatePresence>
+                            {messages.map((message) => (
+                                <motion.div
+                                    key={message.id}
+                                    initial={{ opacity: 0, y: 50 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -50 }}
+                                    className={`${styles.message} ${message.userId === userId
                                         ? styles.currentUserMessage
                                         : message.userId === 'system'
                                             ? styles.systemMessage
                                             : styles.otherUserMessage
-                                    }`}
-                            >
-                                <span className={styles.messageText}>{message.text}</span>
-                                <span className={styles.messageTime}>
-                                    {new Date(message.timestamp).toLocaleTimeString()}
-                                </span>
-                            </div>
-                        ))}
+                                        }`}
+                                >
+                                    <span className={styles.messageText}>{message.text}</span>
+                                    <span className={styles.messageTime}>
+                                        {new Date(message.timestamp).toLocaleTimeString()}
+                                    </span>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
                     {typingUsers.length > 0 && (
                         <div className={styles.typingIndicator}>
@@ -268,24 +247,26 @@ export default function BuffaloChatClient() {
                         </div>
                     )}
                     <div className={styles.inputContainer}>
-                        <input
-                            ref={inputRef}
+                        <motion.input
                             className={styles.input}
                             value={inputMessage}
                             onChange={handleInputChange}
                             onKeyPress={handleKeyPress}
                             placeholder="Enter the Matrix..."
+                            whileFocus={{ scale: 1.02 }}
                         />
-                        <button
+                        <motion.button
                             className={styles.button}
                             onClick={sendMessage}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
                         >
                             Send
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 
     return isJoined ? renderChatInterface() : renderJoinScreen();
