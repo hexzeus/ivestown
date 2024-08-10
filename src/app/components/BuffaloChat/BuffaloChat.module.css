@@ -1,5 +1,4 @@
 .container {
-  position: relative;
   display: flex;
   flex-direction: column;
   height: 100vh;
@@ -247,7 +246,7 @@
 .inputContainer {
   display: flex;
   gap: 0.5rem;
-  padding: 1rem;
+  padding: 0.5rem;
   background-color: rgba(0, 0, 0, 0.8);
   position: sticky;
   bottom: 0;
@@ -301,18 +300,10 @@
   color: rgba(0, 255, 0, 0.7);
   margin-bottom: 0.5rem;
   font-style: italic;
-  padding: 0 1rem;
+  padding: 0 0.5rem;
 }
 
 @media (max-width: 768px) {
-  .chatHeader {
-    padding: 0.5rem;
-  }
-
-  .logo {
-    font-size: 1.2rem;
-  }
-
   .chatContainer {
     flex-direction: column;
   }
@@ -321,7 +312,7 @@
     width: 100%;
     max-height: 30vh;
     position: fixed;
-    top: 40px; /* Adjusted to account for smaller header */
+    top: 40px;
     left: 0;
     right: 0;
     z-index: 5;
@@ -334,14 +325,13 @@
   }
 
   .chatArea {
-    padding-top: 40px; /* Adjusted to account for smaller header */
-    height: calc(100vh - 80px); /* Adjusted to account for header and input */
-    overflow-y: auto;
+    padding-top: 40px;
+    height: calc(100vh - 80px);
   }
 
   .messageList {
+    height: calc(100% - 50px);
     padding: 0.5rem;
-    height: calc(100% - 50px); /* Adjusted to ensure messages don't overlap with input */
   }
 
   .message {
@@ -349,11 +339,11 @@
   }
 
   .inputContainer {
-    padding: 0.5rem;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
+    padding: 0.5rem;
   }
 
   .input, .button {
