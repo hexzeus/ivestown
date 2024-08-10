@@ -390,3 +390,20 @@
 .logo:hover {
   animation: glitch 1s linear infinite;
 }
+
+/* Additional styles for desktop */
+@media (min-width: 769px) {
+  .sidebar {
+    position: static;
+    transform: none;
+    max-height: none;
+  }
+
+  .chatArea {
+    padding-top: 0;
+  }
+
+  .toggleUserListButton {
+    display: none;
+  }
+}

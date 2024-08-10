@@ -30,6 +30,7 @@ export default function BuffaloChatClient() {
     const inputRef = useRef<HTMLInputElement>(null);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const [joinAnimation, setJoinAnimation] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     const addMessage = useCallback((message: ChatMessage) => {
         setMessages((prevMessages) => {
@@ -38,6 +39,16 @@ export default function BuffaloChatClient() {
             }
             return prevMessages;
         });
+    }, []);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     useEffect(() => {
@@ -138,6 +149,10 @@ export default function BuffaloChatClient() {
         }
     };
 
+    const toggleUserList = () => {
+        setShowUserList(prev => !prev);
+    };
+
     const renderJoinScreen = () => (
         <motion.div
             className={styles.joinContainer}
@@ -205,19 +220,20 @@ export default function BuffaloChatClient() {
                 <h1 className={styles.logo}>IVES_HUB Chat</h1>
                 <button
                     className={styles.toggleUserListButton}
-                    onClick={() => setShowUserList(!showUserList)}
+                    onClick={toggleUserList}
                 >
                     {showUserList ? 'Hide Users' : 'Show Users'}
                 </button>
             </div>
             <div className={styles.chatContainer}>
                 <AnimatePresence>
-                    {showUserList && (
+                    {(showUserList || !isMobile) && (
                         <motion.div
-                            className={styles.sidebar}
-                            initial={{ opacity: 0, x: -100 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -100 }}
+                            className={`${styles.sidebar} ${showUserList ? styles.show : ''}`}
+                            initial={isMobile ? { opacity: 0, y: -100 } : { opacity: 1, x: 0 }}
+                            animate={isMobile ? { opacity: 1, y: 0 } : { opacity: 1, x: 0 }}
+                            exit={isMobile ? { opacity: 0, y: -100 } : { opacity: 1, x: 0 }}
+                            transition={{ duration: 0.3 }}
                         >
                             <h2>Active Users</h2>
                             <ul>
