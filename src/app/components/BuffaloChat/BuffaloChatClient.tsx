@@ -44,6 +44,7 @@ export default function BuffaloChatClient() {
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth <= 768);
+            setShowUserList(window.innerWidth > 768);
         };
 
         handleResize();
@@ -190,7 +191,7 @@ export default function BuffaloChatClient() {
                     whileTap={{ scale: 0.9 }}
                     disabled={!username.trim()}
                 >
-                    Jack In
+                    Join Chat
                 </motion.button>
             </motion.div>
             {joinAnimation && (
@@ -218,12 +219,14 @@ export default function BuffaloChatClient() {
             </div>
             <div className={styles.chatHeader}>
                 <h1 className={styles.logo}>IVES_HUB Chat</h1>
-                <button
-                    className={styles.toggleUserListButton}
-                    onClick={toggleUserList}
-                >
-                    {showUserList ? 'Hide Users' : 'Show Users'}
-                </button>
+                {isMobile && (
+                    <button
+                        className={styles.toggleUserListButton}
+                        onClick={toggleUserList}
+                    >
+                        {showUserList ? 'Hide Users' : 'Show Users'}
+                    </button>
+                )}
             </div>
             <div className={styles.chatContainer}>
                 <AnimatePresence>
