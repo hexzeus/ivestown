@@ -9,51 +9,35 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  padding: 10px; /* Added padding for mobile devices */
+  padding: 20px;
 }
 
-.matrixBackground {
+.matrixRain {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%);
-  opacity: 0.5;
   z-index: 1;
-  overflow: hidden;
-}
-
-.matrixBackground::before {
-  content: '0 1 ';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  transform-origin: center;
-  animation: matrixRain 20s linear infinite;
-  font-family: 'Courier New', monospace;
-  font-size: 1.5rem;
-  color: #0f0;
-  opacity: 0.7;
-  text-shadow: 0 0 5px #0f0;
 }
 
 .content {
   position: relative;
   z-index: 2;
   text-align: center;
-  color: #0f0;
+  color: #00ff00;
   font-family: 'Courier New', monospace;
-  padding: 10px; /* Ensure proper padding for mobile devices */
+  padding: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
 }
 
 .title {
   font-size: 4rem;
   margin-bottom: 2rem;
-  text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
-  animation: pulse 2s infinite;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+  animation: pulse 2s infinite, glitch 5s infinite;
 }
 
 .textContainer {
@@ -64,24 +48,26 @@
 }
 
 .typingText {
-  color: #0f0;
+  color: #00ff00;
   font-size: 1.5rem;
   white-space: nowrap;
   overflow: hidden;
-  border-right: .15em solid #0f0;
+  border-right: .15em solid #00ff00;
   animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
 }
 
 .enterButton {
   background-color: transparent;
-  border: 2px solid #0f0;
-  color: #0f0;
-  padding: 10px 20px;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  padding: 12px 24px;
   font-size: 1.2rem;
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .enterButton span {
@@ -106,24 +92,15 @@
 
 .enterButton:hover {
   background-color: rgba(0, 255, 0, 0.2);
-  box-shadow: 0 0 10px #0f0;
+  box-shadow: 0 0 20px #00ff00;
 }
 
 @keyframes pulse {
   0%, 100% {
-    text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0;
+    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
   }
   50% {
-    text-shadow: 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0;
-  }
-}
-
-@keyframes matrixRain {
-  0% {
-    transform: translateY(0) rotate(45deg);
-  }
-  100% {
-    transform: translateY(50%) rotate(45deg);
+    text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00, 0 0 50px #00ff00;
   }
 }
 
@@ -134,20 +111,79 @@
 
 @keyframes blink-caret {
   from, to { border-color: transparent }
-  50% { border-color: #0f0 }
+  50% { border-color: #00ff00 }
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
+      0.025em 0.05em 0 #fffc00;
+  }
+  14% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
+      0.025em 0.05em 0 #fffc00;
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
+      0 -0.05em 0 #fffc00;
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
+      0 -0.05em 0 #fffc00;
+  }
+  100% {
+    text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.025em 0 #fc00ff,
+      -0.025em -0.05em 0 #fffc00;
+  }
 }
 
 @media (max-width: 768px) {
   .title {
     font-size: 2.5rem;
   }
-  
+ 
   .typingText {
     font-size: 1rem;
   }
-  
+ 
   .enterButton {
     font-size: 1rem;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .title {
+    font-size: 2rem;
+  }
+ 
+  .typingText {
+    font-size: 0.9rem;
+  }
+ 
+  .enterButton {
+    font-size: 0.9rem;
     padding: 8px 16px;
   }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.content {
+  animation: fadeIn 1s ease-in;
+}
+
+.glitch {
+  animation: glitch 0.5s linear infinite;
 }

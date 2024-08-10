@@ -27,6 +27,7 @@ export default function BuffaloChatClient() {
     const [typingUsers, setTypingUsers] = useState<string[]>([]);
     const messageListRef = useRef<HTMLDivElement>(null);
     const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const [joinAnimation, setJoinAnimation] = useState(false);
 
     const addMessage = useCallback((message: ChatMessage) => {
         setMessages((prevMessages) => {
@@ -127,30 +128,74 @@ export default function BuffaloChatClient() {
 
     const handleJoin = () => {
         if (username.trim() && socket) {
-            socket.emit('join', username);
+            setJoinAnimation(true);
+            setTimeout(() => {
+                socket.emit('join', username);
+                setIsJoined(true);
+            }, 2000);
         }
     };
 
     const renderJoinScreen = () => (
-        <div className={styles.joinContainer}>
+        <motion.div
+            className={styles.joinContainer}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <div className={styles.matrixRainContainer}>
                 <MatrixRain />
             </div>
-            <h1 className={styles.logo}>IVES_HUB Chat</h1>
-            <input
-                className={styles.input}
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                placeholder="Enter your username"
-            />
-            <button className={styles.button} onClick={handleJoin}>
-                Join Chat
-            </button>
-        </div>
+            <motion.div
+                className={styles.joinContent}
+                initial={{ y: 50, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ delay: 0.5 }}
+            >
+                <h1 className={styles.logo}>IVES_HUB Chat</h1>
+                <motion.div
+                    className={styles.inputWrapper}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                >
+                    <input
+                        className={styles.input}
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Enter your username"
+                        onKeyPress={(e) => e.key === 'Enter' && handleJoin()}
+                    />
+                </motion.div>
+                <motion.button
+                    className={styles.button}
+                    onClick={handleJoin}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    disabled={!username.trim()}
+                >
+                    Join Chat
+                </motion.button>
+            </motion.div>
+            {joinAnimation && (
+                <motion.div
+                    className={styles.joinAnimation}
+                    initial={{ scaleY: 0 }}
+                    animate={{ scaleY: 1 }}
+                    transition={{ duration: 2 }}
+                >
+                    <div className={styles.codeRain} />
+                </motion.div>
+            )}
+        </motion.div>
     );
 
     const renderChatInterface = () => (
-        <div className={styles.container}>
+        <motion.div
+            className={styles.container}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+        >
             <div className={styles.matrixRainContainer}>
                 <MatrixRain />
             </div>
@@ -160,7 +205,13 @@ export default function BuffaloChatClient() {
                     <h2>Active Users</h2>
                     <ul>
                         {activeUsers.map(user => (
-                            <li key={user.id}>{user.username}</li>
+                            <motion.li
+                                key={user.id}
+                                initial={{ opacity: 0, x: -50 }}
+                                animate={{ opacity: 1, x: 0 }}
+                            >
+                                {user.username}
+                            </motion.li>
                         ))}
                     </ul>
                 </div>
@@ -196,20 +247,26 @@ export default function BuffaloChatClient() {
                         </div>
                     )}
                     <div className={styles.inputContainer}>
-                        <input
+                        <motion.input
                             className={styles.input}
                             value={inputMessage}
                             onChange={handleInputChange}
                             onKeyPress={handleKeyPress}
                             placeholder="Enter the Matrix..."
+                            whileFocus={{ scale: 1.02 }}
                         />
-                        <button className={styles.button} onClick={sendMessage}>
+                        <motion.button
+                            className={styles.button}
+                            onClick={sendMessage}
+                            whileHover={{ scale: 1.1 }}
+                            whileTap={{ scale: 0.9 }}
+                        >
                             Send
-                        </button>
+                        </motion.button>
                     </div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 
     return isJoined ? renderChatInterface() : renderJoinScreen();

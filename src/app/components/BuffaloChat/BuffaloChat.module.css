@@ -4,43 +4,10 @@
   flex-direction: column;
   height: 100vh;
   padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent background */
+  background-color: rgba(0, 0, 0, 0.9);
   color: #00ff00;
   font-family: 'Courier New', monospace;
-  z-index: 2; /* Ensure it's above the MatrixRain */
-}
-
-.logo {
-  font-size: 2.5rem;
-  color: #00ff00;
-  margin-bottom: 1rem;
-  text-align: center;
-  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
-  animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-  0% {
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
-  }
-  50% {
-    text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00;
-  }
-  100% {
-    text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
-  }
-}
-
-.chatContainer {
-  flex: 1;
-  display: flex;
-  background-color: rgba(0, 255, 0, 0.05); /* More transparent */
-  border-radius: 0.5rem;
-  padding: 1rem;
   overflow: hidden;
-  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-  position: relative;
-  z-index: 3; /* Ensure it's above the container background */
 }
 
 .matrixRainContainer {
@@ -53,11 +20,91 @@
   pointer-events: none;
 }
 
+.logo {
+  font-size: 3rem;
+  color: #00ff00;
+  margin-bottom: 1rem;
+  text-align: center;
+  text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { text-shadow: 0 0 10px #00ff00, 0 0 20px #00ff00, 0 0 30px #00ff00; }
+  50% { text-shadow: 0 0 20px #00ff00, 0 0 30px #00ff00, 0 0 40px #00ff00; }
+}
+
+.joinContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10;
+}
+
+.joinContent {
+  text-align: center;
+  padding: 2rem;
+  background-color: rgba(0, 255, 0, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+}
+
+.inputWrapper {
+  margin: 20px 0;
+}
+
+.joinAnimation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.codeRain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, 
+    rgba(0, 255, 0, 0) 0%,
+    rgba(0, 255, 0, 0.2) 75%,
+    rgba(0, 255, 0, 0.8) 100%
+  );
+  animation: codeRainFall 2s linear forwards;
+}
+
+@keyframes codeRainFall {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(0); }
+}
+
+.chatContainer {
+  flex: 1;
+  display: flex;
+  background-color: rgba(0, 255, 0, 0.05);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow: hidden;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  position: relative;
+  z-index: 3;
+}
+
 .sidebar {
   width: 200px;
   padding-right: 1rem;
   border-right: 1px solid rgba(0, 255, 0, 0.3);
-  overflow-y: auto; /* Ensure the sidebar is scrollable */
+  overflow-y: auto;
 }
 
 .sidebar h2 {
@@ -74,6 +121,12 @@
 .sidebar li {
   margin-bottom: 0.5rem;
   color: rgba(0, 255, 0, 0.8);
+  transition: all 0.3s ease;
+}
+
+.sidebar li:hover {
+  color: #00ff00;
+  text-shadow: 0 0 5px #00ff00;
 }
 
 .chatArea {
@@ -81,7 +134,7 @@
   display: flex;
   flex-direction: column;
   padding-left: 1rem;
-  overflow-y: auto; /* Ensure the chat area is scrollable */
+  overflow-y: auto;
 }
 
 .messageList {
@@ -107,16 +160,21 @@
   max-width: 80%;
   position: relative;
   overflow: hidden;
-  word-wrap: break-word; /* Ensure long words break and fit within the container */
-  white-space: pre-wrap; /* Preserve whitespace and ensure long text wraps correctly */
-  max-height: 200px; /* Maximum height for each message */
-  overflow-y: auto; /* Add a scrollbar if the message is too tall */
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  max-height: 200px;
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}
+
+.message:hover {
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .messageText {
   position: relative;
   z-index: 1;
-  word-break: break-word; /* Ensure text breaks within the word if necessary */
+  word-break: break-word;
 }
 
 .messageTime {
@@ -160,21 +218,17 @@
 }
 
 @keyframes move {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: 50px 50px;
-  }
+  0% { background-position: 0 0; }
+  100% { background-position: 50px 50px; }
 }
 
 .inputContainer {
   display: flex;
   gap: 0.5rem;
-  padding-top: 0.5rem; /* Added padding for separation */
-  position: sticky; /* Ensure input stays at the bottom */
+  padding-top: 0.5rem;
+  position: sticky;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9); /* Background color to separate from chat */
+  background-color: rgba(0, 0, 0, 0.9);
   z-index: 2;
 }
 
@@ -186,6 +240,12 @@
   border-radius: 0.25rem;
   padding: 0.5rem;
   font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
 
 .input::placeholder {
@@ -208,29 +268,17 @@
   box-shadow: 0 0 10px #00ff00;
 }
 
+.button:disabled {
+  background-color: #005500;
+  color: #003300;
+  cursor: not-allowed;
+}
+
 .typingIndicator {
   font-size: 0.8rem;
   color: rgba(0, 255, 0, 0.7);
   margin-bottom: 0.5rem;
   font-style: italic;
-}
-
-.joinContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #000;
-}
-
-.joinContainer .input {
-  margin-bottom: 1rem;
-  width: 300px;
-}
-
-.joinContainer .button {
-  width: 300px;
 }
 
 @media (max-width: 768px) {
@@ -269,5 +317,41 @@
   .joinContainer .input,
   .joinContainer .button {
     width: 100%;
+    max-width: 300px;
   }
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
+      0.025em 0.05em 0 #fffc00;
+  }
+  14% {
+    text-shadow: 0.05em 0 0 #00fffc, -0.05em -0.025em 0 #fc00ff,
+      0.025em 0.05em 0 #fffc00;
+  }
+  15% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  49% {
+    text-shadow: -0.05em -0.025em 0 #00fffc, 0.025em 0.025em 0 #fc00ff,
+      -0.05em -0.05em 0 #fffc00;
+  }
+  50% {
+    text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
+      0 -0.05em 0 #fffc00;
+  }
+  99% {
+    text-shadow: 0.025em 0.05em 0 #00fffc, 0.05em 0 0 #fc00ff,
+      0 -0.05em 0 #fffc00;
+  }
+  100% {
+    text-shadow: -0.025em 0 0 #00fffc, -0.025em -0.025em 0 #fc00ff,
+      -0.025em -0.05em 0 #fffc00;
+  }
+}
+
+.logo:hover {
+  animation: glitch 1s linear infinite;
 }
