@@ -5,6 +5,14 @@ body {
   font-family: 'Courier New', Courier, monospace;
   background-color: #000;
   color: #00ff00;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#__next {
+  width: 100%;
+  height: 100%;
 }
 
 * {
@@ -13,4 +21,35 @@ body {
 
 :root {
   --matrix-green: #00ff00;
+  --matrix-dark-green: #003300;
+  --matrix-black: #000000;
+}
+
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--matrix-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--matrix-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--matrix-dark-green);
+}
+
+/* For Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--matrix-green) var(--matrix-black);
+}
+
+/* Fullscreen styles */
+:fullscreen, ::backdrop {
+  background-color: var(--matrix-black);
 }
